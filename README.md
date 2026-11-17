@@ -17,8 +17,8 @@ An OpenCore EFI configuration providing hardware acceleration and macOS support 
 | Model | Dell Latitude 7430 |
 | Processor | 12th Gen Intel Core i7-1270P (Alder Lake-P, 12 Cores / 16 Threads, up to 4.80 GHz) |
 | Graphics | Intel Iris Xe Graphics (`8086:46A6`, Revision `0x0C`, Subsystem `1028:0B09`, 1536 MB Dynamic VRAM, Metal 2) |
-| Memory | 16 GB LPDDR4x 4267 MHz dual-channel |
-| Storage | 512 GB M.2 NVMe PCIe Gen 4 Solid State Drive |
+| Memory | 32 GB LPDDR5 4800 MHz dual-channel |
+| Storage | 256 GB NVMe SSD (Samsung SM981/PM981/PM983 controller, supported via NVMeFix) |
 | Display | 14.0-inch Full High Definition (1920x1080) 60Hz internal eDP panel |
 | Sound Card | Intel Alder Lake-P cAVS (`8086:51c8`) + Realtek ALC3281 / ALC711 Codec |
 | Wireless | Intel Wi-Fi 6E AX211 (802.11ax, 2x2, 160MHz) |
@@ -26,7 +26,7 @@ An OpenCore EFI configuration providing hardware acceleration and macOS support 
 | Ethernet | USB-C / Thunderbolt Gigabit Adapter |
 | Touchpad | Dell I2C HID Multitouch Touchpad + Physical Buttons |
 | Keyboard | Dell Backlit Keyboard with ambient brightness control |
-| Web Camera | Integrated HD 720p / RGB WebCam with privacy shutter |
+| Web Camera | Integrated FHD 1080p RGB WebCam with privacy shutter |
 | Battery | Dell 4-cell 58Wh ExpressCharge Battery |
 | Ports | 2x Thunderbolt 4 (Power Delivery & DisplayPort), 1x USB-A 3.2 Gen 1 (PowerShare), 1x HDMI 2.0, 1x 3.5mm Universal Audio Jack, 1x MicroSD Card Reader |
 
@@ -92,7 +92,7 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 - [x] **Bluetooth:** Native pairing and wireless audio transmission via `IntelBluetoothFirmware.kext` and `BlueToolFixup.kext`.
 - [x] **Multitouch Trackpad:** Full macOS multi-finger gestures, tap-to-click, and tracking via `VoodooI2C.kext` and `VoodooI2CHID.kext`.
 - [x] **Battery & Thermal Management:** Accurate battery percentage, discharge rates, and power state readout via `VirtualSMC.kext` and `SMCBatteryManager.kext`.
-- [x] **Web Camera:** Internal HD webcam recognized and operational in FaceTime, Photo Booth, and web conferencing tools.
+- [x] **Web Camera:** Internal 1080p FHD webcam recognized and operational in FaceTime, Photo Booth, and web conferencing tools.
 - [x] **USB-C & Thunderbolt Ports:** Power Delivery charging, data transfer, and external device connectivity.
 - [x] **USB-A 3.2 Ports:** High-speed USB 3.0/3.1 bus data transfer with PowerShare functionality.
 
