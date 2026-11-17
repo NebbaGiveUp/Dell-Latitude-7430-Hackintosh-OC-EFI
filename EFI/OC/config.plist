@@ -1636,7 +1636,7 @@
 				AAAAAAAAAAAAAAAAAAA=
 				</data>
 				<key>boot-args</key>
-				<string>keepsyms=1 -vi2c-force-polling -v -allow3d -disablegfxfirmware -igfxdvmt alcid=11 -wex-no-gva</string>
+				<string>keepsyms=1 -vi2c-force-polling -v -allow3d -disablegfxfirmware -igfxdvmt alcid=11 -wex-no-gva-scaler</string>
 				<key>csr-active-config</key>
 				<data>
 				AwgAAA==
