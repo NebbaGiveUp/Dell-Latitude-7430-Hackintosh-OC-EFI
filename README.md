@@ -78,7 +78,7 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 ## What Works
 
 - [x] **CPU Core Topology and Power Scheduling:** Alder Lake hybrid architecture (4 Performance cores + 8 Efficient cores, 16 logical threads) correctly mapped and scheduled using `CpuTopologyRebuild.kext`. High-priority tasks are prioritized onto Performance cores, Hyper-Threading is recognized, and all 16 execution units remain fully utilized.
-- [x] **Full Graphics Acceleration (Metal 2):** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM.
+- [x] **Full Graphics Acceleration (Metal 2):** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM. Includes `-wex-no-gva` stabilization in `boot-args` to prevent donor VideoToolbox VA driver faults and WindowServer display hangs during animated media playback (e.g., Telegram GIFs and animated stickers).
 - [x] **Internal Display Backlight Control:** Native brightness adjustments via Fn keys (`BrightnessKeys.kext`) and the macOS Control Center slider.
 - [x] **Internal Audio Output & Input:** Speakers, headphone jack, and microphone arrays function natively via `AppleALC.kext` and `SimpleHDA.kext` (layout-id `11`).
 - [x] **Display Idle Sleep & Wake:** Inactivity display blanking and keyboard/trackpad wake function cleanly without GPU blitter ring hangs.
