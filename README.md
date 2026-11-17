@@ -83,6 +83,7 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 
 ## What Works
 
+- [x] **CPU Core Topology and Power Scheduling:** Alder Lake hybrid architecture (4 Performance cores + 8 Efficient cores, 16 logical threads) correctly mapped and scheduled using `CpuTopologyRebuild.kext`. High-priority tasks are prioritized onto Performance cores, Hyper-Threading is recognized, and all 16 execution units remain fully utilized.
 - [x] **Full Graphics Acceleration (Metal 2):** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM.
 - [x] **Internal Display Backlight Control:** Native brightness adjustments via Fn keys (`BrightnessKeys.kext`) and the macOS Control Center slider.
 - [x] **Internal Audio Output & Input:** Speakers, headphone jack, and microphone arrays function natively via `AppleALC.kext` and `SimpleHDA.kext` (layout-id `11`).
@@ -135,7 +136,7 @@ macOS Tahoe removed the native `AppleHDA.kext` driver stack. This EFI restores i
 
 ## Special Credits
 
-- **[b00t0x](https://github.com/b00t0x):** Creator of the WhateverXe project and WhateverXe-Graphics userspace bundle framework.
+- **[b00t0x](https://github.com/b00t0x):** Creator of the CpuTopologyRebuild plugin, WhateverXe project, and WhateverXe-Graphics userspace bundle framework.
 - **Thatisjigen & renedis:** Crucial reverse-engineering and commits for Alder Lake eDP port hand-off, single-output CDCLK routing, and Display Engine master parking.
 - **[laobamac](https://github.com/laobamac/SimpleHDA):** Creator of SimpleHDA for restoring the AppleHDA audio stack on macOS Tahoe without root patches.
 - **[Acidanthera](https://github.com/acidanthera):** Authors and maintainers of OpenCore, Lilu, AppleALC, VirtualSMC, RestrictEvents, and MacKernelSDK.
