@@ -65,7 +65,7 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 - Intel SpeedStep: **Enabled**
 - C-States Control: **Enabled**
 - Intel TurboBoost: **Enabled**
-- HyperThreading: **Enabled**
+- HyperThreading: **Enabled** (Untested)
 
 ### Virtualization
 - Intel Virtualization Technology: **Enabled**
@@ -94,9 +94,8 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 - [x] **Multitouch Trackpad:** Full macOS multi-finger gestures, tap-to-click, and tracking via `VoodooI2C.kext` and `VoodooI2CHID.kext`.
 - [x] **Battery & Thermal Management:** Accurate battery percentage, discharge rates, and power state readout via `VirtualSMC.kext` and `SMCBatteryManager.kext`.
 - [x] **Web Camera:** Internal 1080p FHD webcam recognized and operational in FaceTime, Photo Booth, and web conferencing tools.
-- [x] **USB-C & Thunderbolt Ports:** Power Delivery charging, data transfer, and external device connectivity.
+- [x] **USB-C Ports:** Power Delivery charging, data transfer, and external device connectivity.
 - [x] **USB-A 3.2 Ports:** High-speed USB 3.0/3.1 bus data transfer with PowerShare functionality.
-
 ---
 
 ## What Does Not Work
