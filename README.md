@@ -136,7 +136,6 @@ macOS Tahoe removed the native `AppleHDA.kext` driver stack. This EFI restores i
 ## Special Credits
 
 - **[b00t0x](https://github.com/b00t0x):** Creator of the WhateverXe project and WhateverXe-Graphics userspace bundle framework.
-- **[NebbaGiveUp](https://github.com/NebbaGiveUp/WhateverXe-AlderLake):** WhateverXe Alder Lake-P eDP port mode 0 and display pipeline patchset.
 - **Thatisjigen & renedis:** Crucial reverse-engineering and commits for Alder Lake eDP port hand-off, single-output CDCLK routing, and Display Engine master parking.
 - **[laobamac](https://github.com/laobamac/SimpleHDA):** Creator of SimpleHDA for restoring the AppleHDA audio stack on macOS Tahoe without root patches.
 - **[Acidanthera](https://github.com/acidanthera):** Authors and maintainers of OpenCore, Lilu, AppleALC, VirtualSMC, RestrictEvents, and MacKernelSDK.
