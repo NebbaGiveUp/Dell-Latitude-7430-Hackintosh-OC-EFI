@@ -1,0 +1,1 @@
+# Dell-Latitude-7430-Hackintosh-OC-EFI
