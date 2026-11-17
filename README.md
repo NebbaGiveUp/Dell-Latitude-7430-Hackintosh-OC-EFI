@@ -32,12 +32,6 @@ An OpenCore EFI configuration providing hardware acceleration and macOS support 
 
 ---
 
-### Bootloader and SMBIOS
-
-- **Bootloader:** OpenCore 1.0.x
-- **SMBIOS Model:** `MacBookPro16,2`
-- **PlatformInfo Notice:** All serial numbers and unique hardware identifiers have been cleared from this public repository. **You must generate your own serials using [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) before booting.**
-
 ---
 
 ## BIOS Settings
