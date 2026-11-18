@@ -115,7 +115,7 @@ Before your first boot, open `EFI/OC/config.plist` using ProperTree or OpenCore 
    - `PlatformInfo -> Generic -> ROM` (Use your primary network adapter MAC address without colons)
 
 ### 2. Install Userspace Graphics Drivers
-This EFI utilizes [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) for Intel Iris Xe acceleration:
+This EFI utilizes [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) ([v0.8.2-adl Release](https://github.com/NebbaGiveUp/WhateverXe-AlderLake/releases/tag/v0.8.2-adl)) for Intel Iris Xe acceleration:
 1. Download **`WhateverXe-Graphics-0.4.4.pkg`** from the [WhateverXe-Graphics Releases](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.4.4).
 2. Run the package installer and reboot. This installs the required Metal, OpenGL, and Video Acceleration driver bundles into `/Library/Extensions` and `/Library/GPUBundles`.
 
