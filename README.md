@@ -134,6 +134,34 @@ macOS frequently classifies external HDMI monitors as televisions, forcing Limit
    ```
 2. Unplug and reconnect your HDMI cable or restart your Mac. (Pre-configured for MSI PRO MP251 E14L; see [`Utilities/Display-Overrides/README.md`](Utilities/Display-Overrides/README.md) for adapting to other monitor models).
 
+### 5. Configure Power Management & Sleep/Wake (Recommended)
+macOS defaults to `hibernatemode 3` and enables network background wakes, which can cause unbootable states or black screens on wake with Alder Lake Hackintoshes. To configure stable S3 RAM sleep:
+1. Run the included configuration script:
+   ```bash
+   cd Utilities/Power-Management
+   sudo ./fix_sleep.sh
+   ```
+   Or apply manually:
+   ```bash
+   sudo pmset -a hibernatemode 0 standby 0 powernap 0 proximitywake 0 tcpkeepalive 0 womp 0
+   sudo pmset -b displaysleep 5 sleep 10 disksleep 10
+   sudo pmset -c displaysleep 15 sleep 30 disksleep 10
+   sudo rm -f /var/vm/sleepimage && sudo touch /var/vm/sleepimage && sudo chflags uchg /var/vm/sleepimage
+   ```
+
+### 6. Fix Full-Screen Photo Stalls in Messaging Apps & Preview (Recommended)
+On macOS Tahoe with Intel Iris Xe (Alder Lake), opening full-screen images in Telegram, Safari, or Preview triggers Apple's Live Text OCR vision framework. Because the donor Gen12 Tiger Lake Metal driver lacks neural/vision shader instructions, `MTLCompilerService` enters a 5–10 second shader compilation loop that stalls image display.
+To eliminate this stall instantly (0.0s latency):
+1. Run the included script:
+   ```bash
+   cd Utilities/Photo-Viewer-Fix
+   ./fix_photo_stall.sh
+   ```
+   Or apply directly in Terminal:
+   ```bash
+   defaults write -g AppleLiveTextEnabled -bool false
+   ```
+
 ---
 
 ## Special Credits
