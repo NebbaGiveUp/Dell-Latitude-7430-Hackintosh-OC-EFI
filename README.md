@@ -77,19 +77,19 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 
 ## What Works
 
-- [x] **CPU Core Topology and Power Scheduling:** Alder Lake hybrid architecture (4 Performance cores + 8 Efficient cores, 16 logical threads) correctly mapped and scheduled using `CpuTopologyRebuild.kext`. High-priority tasks are prioritized onto Performance cores, Hyper-Threading is recognized, and all 16 execution units remain fully utilized.
-- [x] **Full Graphics Acceleration (Metal 2) & Media Decoding:** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM. Includes `-wexgvadrop=IOGVAScaler,IOGVABGRAEnc,IOGVAHEVCEncodeCapabilities,IOGVACodec` in `boot-args`. This selective GVA configuration eliminates the donor VA driver's hardware Multi-Format Codec (`VCS0`) GPU reset on Telegram animated GIFs/stickers and eliminates the 9.2-second `VPHAL` unsupported resolution stall on fullscreen photo previews, while preserving full GPU hardware HEVC decoding and 60Hz butter-smooth desktop compositing.
-- [x] **Internal Display Backlight Control:** Native brightness adjustments via Fn keys (`BrightnessKeys.kext`) and the macOS Control Center slider.
-- [x] **Internal Audio Output & Input:** Speakers, and microphone arrays function natively via `AppleALC.kext` and `SimpleHDA.kext` (layout-id `11`).
-- [x] **Display Idle Sleep & Wake:** Inactivity display blanking and keyboard/trackpad wake function cleanly without GPU blitter ring hangs.
-- [x] **System Sleep & Wake:** Reliable sleep and wake via closing the lid or selecting Sleep from the Apple menu.
-- [x] **Wi-Fi Networking:** 2.4 GHz and 5 GHz wireless connections via `AirportItlwm.kext`.
-- [x] **Bluetooth:** Native pairing and wireless audio transmission via `IntelBluetoothFirmware.kext` and `BlueToolFixup.kext`.
-- [x] **Multitouch Trackpad:** Full macOS multi-finger gestures, tap-to-click, and tracking via `VoodooI2C.kext` and `VoodooI2CHID.kext`.
-- [x] **Battery & Thermal Management:** Accurate battery percentage, discharge rates, and power state readout via `VirtualSMC.kext` and `SMCBatteryManager.kext`.
-- [x] **Web Camera:** Internal 1080p FHD webcam recognized and operational in FaceTime, Photo Booth, and web conferencing tools.
-- [x] **USB-C Ports:** Power Delivery charging, data transfer, and external device connectivity.
-- [x] **USB-A 3.2 Ports:** High-speed USB 3.0/3.1 bus data transfer with PowerShare functionality.
+- **CPU Core Topology and Power Scheduling:** Alder Lake hybrid architecture (4 Performance cores + 8 Efficient cores, 16 logical threads) correctly mapped and scheduled using `CpuTopologyRebuild.kext`. High-priority tasks are prioritized onto Performance cores, Hyper-Threading is recognized, and all 16 execution units remain fully utilized.
+- **Full Graphics Acceleration (Metal 2) & Media Decoding:** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM. Includes `-wexgvadrop=IOGVAScaler,IOGVABGRAEnc,IOGVAHEVCEncodeCapabilities,IOGVACodec` in `boot-args`. This selective GVA configuration eliminates the donor VA driver's hardware Multi-Format Codec (`VCS0`) GPU reset on Telegram animated GIFs/stickers and eliminates the 9.2-second `VPHAL` unsupported resolution stall on fullscreen photo previews, while preserving full GPU hardware HEVC decoding and 60Hz butter-smooth desktop compositing.
+- **Internal Display Backlight Control:** Native brightness adjustments via Fn keys (`BrightnessKeys.kext`) and the macOS Control Center slider.
+- **Internal Audio Output & Input:** Speakers, and microphone arrays function natively via `AppleALC.kext` and `SimpleHDA.kext` (layout-id `11`).
+- **Display Idle Sleep & Wake:** Inactivity display blanking and keyboard/trackpad wake function cleanly without GPU blitter ring hangs.
+- **System Sleep & Wake:** Reliable sleep and wake via closing the lid or selecting Sleep from the Apple menu.
+- **Wi-Fi Networking:** 2.4 GHz and 5 GHz wireless connections via `AirportItlwm.kext`.
+- **Bluetooth:** Native pairing and wireless audio transmission via `IntelBluetoothFirmware.kext` and `BlueToolFixup.kext`.
+- **Multitouch Trackpad:** Full macOS multi-finger gestures, tap-to-click, and tracking via `VoodooI2C.kext` and `VoodooI2CHID.kext`.
+- **Battery & Thermal Management:** Accurate battery percentage, discharge rates, and power state readout via `VirtualSMC.kext` and `SMCBatteryManager.kext`.
+- **Web Camera:** Internal 1080p FHD webcam recognized and operational in FaceTime, Photo Booth, and web conferencing tools.
+- **USB-C Ports:** Power Delivery charging, data transfer, and external device connectivity.
+- **USB-A 3.2 Ports:** High-speed USB 3.0/3.1 bus data transfer with PowerShare functionality.
 ---
 
 ## What Does Not Work
