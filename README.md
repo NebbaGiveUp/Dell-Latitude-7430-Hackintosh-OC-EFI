@@ -78,7 +78,7 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 ## What Works
 
 - [x] **CPU Core Topology and Power Scheduling:** Alder Lake hybrid architecture (4 Performance cores + 8 Efficient cores, 16 logical threads) correctly mapped and scheduled using `CpuTopologyRebuild.kext`. High-priority tasks are prioritized onto Performance cores, Hyper-Threading is recognized, and all 16 execution units remain fully utilized.
-- [x] **Full Graphics Acceleration (Metal 2):** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM. Includes `-wex-no-gva-scaler` in `boot-args` to prevent donor VideoToolbox scaler faults during animated media playback (e.g. Telegram GIFs and animated stickers) while keeping full hardware HEVC/H.264 video decoding active on the Iris Xe GPU.
+- [x] **Full Graphics Acceleration (Metal 2) & Media Decoding:** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM. Includes `-wexgvadrop=IOGVAScaler,IOGVABGRAEnc,IOGVAHEVCEncodeCapabilities,IOGVACodec` in `boot-args`. This selective GVA configuration eliminates the donor VA driver's hardware Multi-Format Codec (`VCS0`) GPU reset on Telegram animated GIFs/stickers and eliminates the 9.2-second `VPHAL` unsupported resolution stall on fullscreen photo previews, while preserving full GPU hardware HEVC decoding and 60Hz butter-smooth desktop compositing.
 - [x] **Internal Display Backlight Control:** Native brightness adjustments via Fn keys (`BrightnessKeys.kext`) and the macOS Control Center slider.
 - [x] **Internal Audio Output & Input:** Speakers, and microphone arrays function natively via `AppleALC.kext` and `SimpleHDA.kext` (layout-id `11`).
 - [x] **Display Idle Sleep & Wake:** Inactivity display blanking and keyboard/trackpad wake function cleanly without GPU blitter ring hangs.
@@ -94,9 +94,8 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 
 ## What Does Not Work
 
-- **Safari Video Streaming (YouTube and DRM Video):**  
-  YouTube videos and specific DRM-wrapped web media fail to play in Safari due to macOS Tahoe WebKit MediaSource engine and FairPlay pipeline changes that are incompatible with the unreleased Tiger Lake GVA driver stack.  
-  *Workaround:* Use an alternative web browser (Google Chrome, Brave, Microsoft Edge, or Mozilla Firefox) for smooth, hardware-accelerated video streaming.
+- **Safari 4K Video Streaming:**  
+  Safari web video playback operates smoothly up to 1080p60. 4K streams utilizing VP9 or AV1 codecs rely on CPU software decoding or may drop frames. For 4K 60fps streaming, Chromium-based browsers (Google Chrome, Brave, Edge) or Firefox are recommended.
 - **Apple-Native AirDrop & Sidecar:**  
   AirDrop and Sidecar rely on Apple-proprietary Broadcom Wi-Fi/Bluetooth hardware features that are unsupported on Intel wireless cards.
 
