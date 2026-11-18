@@ -80,6 +80,7 @@ The following Dell BIOS configurations (accessible via `F2` during boot) are rec
 - **CPU Core Topology and Power Scheduling:** Alder Lake hybrid architecture (4 Performance cores + 8 Efficient cores, 16 logical threads) correctly mapped and scheduled using `CpuTopologyRebuild.kext`. High-priority tasks are prioritized onto Performance cores, Hyper-Threading is recognized, and all 16 execution units remain fully utilized.
 - **Full Graphics Acceleration (Metal 2) & Media Decoding:** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM. Includes `-wexgvadrop=IOGVAScaler,IOGVABGRAEnc,IOGVAHEVCEncodeCapabilities,IOGVACodec` in `boot-args`. This selective GVA configuration eliminates the donor VA driver's hardware Multi-Format Codec (`VCS0`) GPU reset on Telegram animated GIFs/stickers and eliminates the 9.2-second `VPHAL` unsupported resolution stall on fullscreen photo previews, while preserving full GPU hardware HEVC decoding and 60Hz butter-smooth desktop compositing.
 - **Internal Display Backlight Control:** Native brightness adjustments via Fn keys (`BrightnessKeys.kext`) and the macOS Control Center slider.
+- **External HDMI Display & Full Range RGB:** External monitor output supported over HDMI. Includes an EDID override utility in `Utilities/Display-Overrides/` that forces Full Range RGB (0–255) output, resolving washed-out colors and lifted gray blacks caused by macOS HDMI TV/YCbCr color space classification.
 - **Internal Audio Output & Input:** Speakers, and microphone arrays function natively via `AppleALC.kext` and `SimpleHDA.kext` (layout-id `11`).
 - **Display Idle Sleep & Wake:** Inactivity display blanking and keyboard/trackpad wake function cleanly without GPU blitter ring hangs.
 - **System Sleep & Wake:** Reliable sleep and wake via closing the lid or selecting Sleep from the Apple menu.
@@ -123,6 +124,15 @@ This EFI utilizes [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/Whatever
 macOS Tahoe removed the native `AppleHDA.kext` driver stack. This EFI restores it using [SimpleHDA](https://github.com/laobamac/SimpleHDA):
 1. Download and run the **`SimpleHDA-HAL-1.0.1.pkg`** installer from the [SimpleHDA Releases](https://github.com/laobamac/SimpleHDA/releases).
 2. This installs `AppleHDAHALPlugIn.bundle` to `/Library/Audio/Plug-Ins/SimpleHDA/` for native volume control and device node discovery.
+
+### 4. Install HDMI Full Range RGB Color Fix (Optional - External Displays)
+macOS frequently classifies external HDMI monitors as televisions, forcing Limited Range YCbCr (16–235) which produces washed-out colors and gray blacks. To force macOS CoreDisplay to output native Full Range RGB (0–255):
+1. Open Terminal and navigate to the `Utilities/Display-Overrides` directory in this repository:
+   ```bash
+   cd Utilities/Display-Overrides
+   sudo ./install_hdmi_rgb_fix.sh
+   ```
+2. Unplug and reconnect your HDMI cable or restart your Mac. (Pre-configured for MSI PRO MP251 E14L; see [`Utilities/Display-Overrides/README.md`](Utilities/Display-Overrides/README.md) for adapting to other monitor models).
 
 ---
 
