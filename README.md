@@ -1,174 +1,119 @@
-# Dell-Latitude-7430-Hackintosh-OpenCore-EFI
+# Dell Latitude 7430 Hackintosh OpenCore EFI
 
-An OpenCore EFI configuration providing hardware acceleration and macOS support for the **Dell Latitude 7430** laptop.
+OpenCore configuration providing full hardware acceleration and macOS support for the **Dell Latitude 7430** laptop.
 
----
-
-## Tested macOS Version
-
-- macOS Tahoe 26.7.3 (`25G342`)
+Tested on **macOS Tahoe 26.7.3 (`25G342`)** and **macOS Sequoia 15.x**.
 
 ---
 
-## System Configuration
+## Hardware Specifications
 
 | Component | Specification |
 | :--- | :--- |
 | Model | Dell Latitude 7430 |
-| Processor | 12th Gen Intel Core i7-1270P (Alder Lake-P, 12 Cores / 16 Threads, up to 4.80 GHz) |
-| Graphics | Intel Iris Xe Graphics (`8086:46A6`, Revision `0x0C`, Subsystem `1028:0B09`, 1536 MB Dynamic VRAM, Metal 2) |
+| Processor | Intel Core i7-1270P (Alder Lake-P, 4P + 8E cores, 16 threads, up to 4.80 GHz) |
+| Graphics | Intel Iris Xe Graphics (`8086:46A6`, Rev `0x0C`, Subsystem `1028:0B09`, 1536 MB Dynamic VRAM, Metal 2) |
 | Memory | 32 GB LPDDR5 4800 MHz dual-channel |
-| Storage | 256 GB NVMe SSD (Samsung SM981/PM981/PM983 controller, supported via NVMeFix) |
-| Display | 14.0-inch Full High Definition (1920x1080) 60Hz internal eDP panel |
-| Sound Card | Intel Alder Lake-P cAVS (`8086:51c8`) + Realtek ALC3281 / ALC711 Codec |
+| Storage | 256 GB NVMe SSD (Samsung PM991a / PM981 via NVMeFix) |
+| Display | 14.0" FHD (1920x1080) 60Hz internal eDP panel |
+| Audio | Realtek ALC3281 / ALC711 (Alder Lake-P cAVS `8086:51c8`, layout-id `11`) |
 | Wireless | Intel Wi-Fi 6E AX211 (802.11ax, 2x2, 160MHz) |
 | Bluetooth | Intel Bluetooth 5.3 Controller |
-| Ethernet | USB-C / Thunderbolt Gigabit Adapter |
-| Touchpad | Dell I2C HID Multitouch Touchpad + Physical Buttons |
+| Trackpad | Dell I2C HID Multitouch Touchpad + physical buttons |
 | Keyboard | Dell Backlit Keyboard with ambient brightness control |
-| Web Camera | Integrated FHD 1080p RGB WebCam with privacy shutter |
+| Camera | 1080p FHD RGB WebCam with privacy shutter |
 | Battery | Dell 4-cell 58Wh ExpressCharge Battery |
-| Ports | 2x Thunderbolt 4 (Power Delivery & DisplayPort), 1x USB-A 3.2 Gen 1 (PowerShare), 1x HDMI 2.0, 1x 3.5mm Universal Audio Jack, 1x MicroSD Card Reader |
+| Ports | 2x Thunderbolt 4 (Power Delivery & DP), 1x USB-A 3.2 Gen 1 (PowerShare), 1x HDMI 2.0, 3.5mm Audio, MicroSD |
 
 ---
 
----
+## BIOS Configuration
 
-## BIOS Settings
+Press `F2` at boot to enter BIOS setup and configure the following options:
 
-The following Dell BIOS configurations (accessible via `F2` during boot) are recommended:
-
-### General
-- Boot Mode: **UEFI**
-- Advanced Boot Options: **Enable UEFI Network Stack: Disabled**
-
-### System Configuration
-- SATA Operation: **AHCI / NVMe** (Do not use RAID On)
-- Integrated NIC: **Enabled**
-- USB Configuration: **Enable USB Boot Support**, **Enable External USB Ports**
-- Audio: **Enabled**
-
-### Security
-- TPM 2.0 Security: **TPM On**
-- Absolute / Computrace: **Disabled**
-
-### Secure Boot
-- Secure Boot: **Disabled**
-
-### Performance
-- Intel SpeedStep: **Enabled**
-- C-States Control: **Enabled**
-- Intel TurboBoost: **Enabled**
-- HyperThreading: **Enabled** (Untested)
-
-### Virtualization
-- Intel Virtualization Technology: **Enabled**
-- VT for Direct I/O (VT-d): **Enabled**
-
-### Power Management
-- Intel Speed Shift Technology: **Enabled**
-- Wake on AC: **Disabled**
-- Block Sleep: **Disabled**
-
-### POST Behavior
-- Fastboot: **Thorough**
+- **SATA Operation:** AHCI / NVMe (do not use RAID On)
+- **Secure Boot:** Disabled
+- **Absolute / Computrace:** Disabled
+- **TPM 2.0:** Enabled
+- **Intel Virtualization Technology & VT-d:** Enabled
+- **Intel SpeedStep & Speed Shift:** Enabled
+- **C-States Control & TurboBoost:** Enabled
+- **Fastboot:** Thorough
+- **Enable UEFI Network Stack:** Disabled
+- **Wake on AC / Block Sleep:** Disabled
 
 ---
 
-## What Works
+## Status
 
-- **CPU Core Topology and Power Scheduling:** Alder Lake hybrid architecture (4 Performance cores + 8 Efficient cores, 16 logical threads) correctly mapped and scheduled using `CpuTopologyRebuild.kext`. High-priority tasks are prioritized onto Performance cores, Hyper-Threading is recognized, and all 16 execution units remain fully utilized.
-- **Full Graphics Acceleration (Metal 2) & Media Decoding:** Powered by the patched [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) driver, running Apple's Gen12 Tiger Lake userspace stack with 1536 MB Dynamic VRAM. Includes `-wexgvadrop=IOGVAScaler,IOGVABGRAEnc,IOGVAHEVCEncodeCapabilities,IOGVACodec` in `boot-args`. This selective GVA configuration eliminates the donor VA driver's hardware Multi-Format Codec (`VCS0`) GPU reset on Telegram animated GIFs/stickers and eliminates the 9.2-second `VPHAL` unsupported resolution stall on fullscreen photo previews, while preserving full GPU hardware HEVC decoding and 60Hz butter-smooth desktop compositing.
-- **Hardware GPU Hang Recovery:** Integrated with `-wex-reset-restore` and `-wex-no-multicontext`. If an unsupported Metal compute shader or 3D workload faults the Alder Lake GPU, WhateverXe catches the hardware reset (`GDRST`), preserves and restores healthy Render Command Streamer (RCS) registers (`RING_MODE` execlists, chicken bits, whitelist, and MOCS/L3 cache tables), and completes stalled waiters, recovering the GPU within seconds without freezing macOS or requiring a reboot.
-- **Internal Display Backlight Control:** Native brightness adjustments via Fn keys (`BrightnessKeys.kext`) and the macOS Control Center slider.
-- **External HDMI Display & Full Range RGB:** External monitor output supported over HDMI. Includes an EDID override utility in `Utilities/Display-Overrides/` that forces Full Range RGB (0–255) output, resolving washed-out colors and lifted gray blacks caused by macOS HDMI TV/YCbCr color space classification.
-- **Internal Audio Output & Input:** Speakers, and microphone arrays function natively via `AppleALC.kext` and `SimpleHDA.kext` (layout-id `11`).
-- **Display Idle Sleep & Wake:** Inactivity display blanking and keyboard/trackpad wake function cleanly without GPU blitter ring hangs.
-- **System Sleep & Wake:** Reliable sleep and wake via closing the lid or selecting Sleep from the Apple menu.
-- **Wi-Fi Networking:** 2.4 GHz and 5 GHz wireless connections via `AirportItlwm.kext`.
-- **Bluetooth:** Native pairing and wireless audio transmission via `IntelBluetoothFirmware.kext` and `BlueToolFixup.kext`.
-- **Multitouch Trackpad:** Full macOS multi-finger gestures, tap-to-click, and tracking via `VoodooI2C.kext` and `VoodooI2CHID.kext`.
-- **Battery & Thermal Management:** Accurate battery percentage, discharge rates, and power state readout via `VirtualSMC.kext` and `SMCBatteryManager.kext`.
-- **Web Camera:** Internal 1080p FHD webcam recognized and operational in FaceTime, Photo Booth, and web conferencing tools.
-- **USB-C Ports:** Power Delivery charging, data transfer, and external device connectivity.
-- **USB-A 3.2 Ports:** High-speed USB 3.0/3.1 bus data transfer with PowerShare functionality.
----
+### What Works
+- **CPU Scheduling:** Alder Lake hybrid architecture (4P + 8E cores, 16 threads) scheduled via `CpuTopologyRebuild.kext`.
+- **Graphics Acceleration:** Full Metal 2 3D acceleration and WindowServer compositing via [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake).
+- **GPU Hang Recovery:** Recovers within seconds from unsupported Metal shader or video faults without crashing (`-wex-reset-restore` & `-wex-no-multicontext`).
+- **Media Decoding:** 4K HEVC hardware decode via GPU; H.264 handled via CPU software decode (`-wexgvadrop`) to bypass donor VA driver ring faults.
+- **Display & Backlight:** Native 1080p 60Hz panel timing with Fn key brightness controls and Control Center slider.
+- **External Video:** HDMI output supported. Full Range RGB (0–255) forced via EDID override in `Utilities/Display-Overrides/`.
+- **Audio:** Internal speakers, 3.5mm combo jack, and microphone via `AppleALC.kext` and `SimpleHDA.kext`.
+- **Sleep & Wake:** Display idle sleep and full ACPI S3 system sleep/wake operate reliably.
+- **Wireless & Bluetooth:** 2.4/5 GHz Wi-Fi via `AirportItlwm.kext`; Bluetooth pairing and audio via `IntelBluetoothFirmware.kext` and `BlueToolFixup.kext`.
+- **Trackpad:** Full macOS multi-touch gestures via `VoodooI2C.kext` and `VoodooI2CHID.kext`.
+- **Power & Battery:** Real-time battery status, percentage, and discharge rate via `VirtualSMC.kext` and `SMCBatteryManager.kext`.
+- **Peripherals:** 1080p Webcam, Thunderbolt 4 (charging and data), USB-A 3.2 Gen 1 with PowerShare.
 
-## What Does Not Work
-
-- **Safari 4K Video Streaming:**  
-  Safari web video playback operates smoothly up to 1080p60. 4K streams utilizing VP9 or AV1 codecs rely on CPU software decoding or may drop frames. For 4K 60fps streaming, Chromium-based browsers (Google Chrome, Brave, Edge) or Firefox are recommended.
-- **Apple-Native AirDrop & Sidecar:**  
-  AirDrop and Sidecar rely on Apple-proprietary Broadcom Wi-Fi/Bluetooth hardware features that are unsupported on Intel wireless cards.
+### Limitations
+- **Safari 4K VP9/AV1:** High-resolution VP9/AV1 streams in Safari fall back to CPU decode or drop frames. Use Chrome or Firefox for 4K60.
+- **AirDrop / Sidecar / Universal Control:** Requires native Apple Broadcom wireless hardware; unsupported on Intel AX211.
 
 ---
 
-## Required Post-Installation Steps
+## Post-Installation Setup
 
-After placing this EFI into your system's EFI partition, the following software components are required on macOS Tahoe to finalize graphics and audio functionality:
-
-### 1. Generate Your Own Serial Numbers (Mandatory)
-Before your first boot, open `EFI/OC/config.plist` using ProperTree or OpenCore Auxiliary Tools:
-1. Run [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) and generate a `MacBookPro16,2` profile.
-2. Fill in:
-   - `PlatformInfo -> Generic -> SystemSerialNumber`
-   - `PlatformInfo -> Generic -> MLB`
-   - `PlatformInfo -> Generic -> SystemUUID`
-   - `PlatformInfo -> Generic -> ROM` (Use your primary network adapter MAC address without colons)
+### 1. Generate SMBIOS Serials (Mandatory)
+Open `EFI/OC/config.plist` and inject unique serials generated with [GenSMBIOS](https://github.com/corpnewt/GenSMBIOS) using the **`MacBookPro16,2`** model:
+- `PlatformInfo -> Generic -> SystemSerialNumber`
+- `PlatformInfo -> Generic -> MLB`
+- `PlatformInfo -> Generic -> SystemUUID`
+- `PlatformInfo -> Generic -> ROM` (primary network adapter MAC address without colons)
 
 ### 2. Install Userspace Graphics Drivers
-This EFI utilizes [WhateverXe-AlderLake](https://github.com/NebbaGiveUp/WhateverXe-AlderLake) ([v0.8.2-adl Release](https://github.com/NebbaGiveUp/WhateverXe-AlderLake/releases/tag/v0.8.2-adl)) for Intel Iris Xe acceleration:
-1. Download **`WhateverXe-Graphics-0.4.4.pkg`** from the [WhateverXe-Graphics Releases](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.4.4).
-2. Run the package installer and reboot. This installs the required Metal, OpenGL, and Video Acceleration driver bundles into `/Library/Extensions` and `/Library/GPUBundles`.
+1. Download **`WhateverXe-Graphics-0.4.4.pkg`** from [WhateverXe-Graphics Releases](https://github.com/b00t0x/WhateverXe-Graphics/releases/tag/v0.4.4).
+2. Run the installer and reboot. This deploys the Gen12 Metal, OpenGL, and Video Acceleration driver bundles into `/Library/Extensions` and `/Library/GPUBundles`.
 
-### 3. Install CoreAudio HAL Plug-in
-macOS Tahoe removed the native `AppleHDA.kext` driver stack. This EFI restores it using [SimpleHDA](https://github.com/laobamac/SimpleHDA):
-1. Download and run the **`SimpleHDA-HAL-1.0.1.pkg`** installer from the [SimpleHDA Releases](https://github.com/laobamac/SimpleHDA/releases).
-2. This installs `AppleHDAHALPlugIn.bundle` to `/Library/Audio/Plug-Ins/SimpleHDA/` for native volume control and device node discovery.
+### 3. Install CoreAudio HAL Plug-in (macOS Tahoe)
+macOS Tahoe removed native legacy `AppleHDA.kext`. SimpleHDA restores audio without root patches:
+1. Download and run **`SimpleHDA-HAL-1.0.1.pkg`** from [SimpleHDA Releases](https://github.com/laobamac/SimpleHDA/releases).
+2. Reboot to activate native volume controls and output routing.
 
-### 4. Install HDMI Full Range RGB Color Fix (Optional - External Displays)
-macOS frequently classifies external HDMI monitors as televisions, forcing Limited Range YCbCr (16–235) which produces washed-out colors and gray blacks. To force macOS CoreDisplay to output native Full Range RGB (0–255):
-1. Open Terminal and navigate to the `Utilities/Display-Overrides` directory in this repository:
+### 4. Enable HDMI Full Range RGB (Optional - External Monitors)
+macOS often treats external HDMI monitors as televisions, forcing Limited Range YCbCr (16–235) with washed-out colors:
+1. Run the included EDID override installer:
    ```bash
    cd Utilities/Display-Overrides
    sudo ./install_hdmi_rgb_fix.sh
    ```
-2. Unplug and reconnect your HDMI cable or restart your Mac. (Pre-configured for MSI PRO MP251 E14L; see [`Utilities/Display-Overrides/README.md`](Utilities/Display-Overrides/README.md) for adapting to other monitor models).
+2. Reconnect the HDMI cable. (Pre-configured for MSI PRO MP251 E14L; see [`Utilities/Display-Overrides/README.md`](Utilities/Display-Overrides/README.md) for other displays).
 
-### 5. Configure Power Management & Sleep/Wake (Recommended)
-macOS defaults to `hibernatemode 3` and enables network background wakes, which can cause unbootable states or black screens on wake with Alder Lake Hackintoshes. To configure stable S3 RAM sleep:
-1. Run the included configuration script:
-   ```bash
-   cd Utilities/Power-Management
-   sudo ./fix_sleep.sh
-   ```
-   Or apply manually:
-   ```bash
-   sudo pmset -a hibernatemode 0 standby 0 powernap 0 proximitywake 0 tcpkeepalive 0 womp 0
-   sudo pmset -b displaysleep 5 sleep 10 disksleep 10
-   sudo pmset -c displaysleep 15 sleep 30 disksleep 10
-   sudo rm -f /var/vm/sleepimage && sudo touch /var/vm/sleepimage && sudo chflags uchg /var/vm/sleepimage
-   ```
+### 5. Configure Sleep / Power Management (Recommended)
+Set stable S3 RAM sleep parameters and disable hibernatemode / network wake:
+```bash
+cd Utilities/Power-Management
+sudo ./fix_sleep.sh
+```
 
-### 6. Fix Full-Screen Photo Stalls in Messaging Apps & Preview (Recommended)
-On macOS Tahoe with Intel Iris Xe (Alder Lake), opening full-screen images in Telegram, Safari, or Preview triggers Apple's Live Text OCR vision framework. Because the donor Gen12 Tiger Lake Metal driver lacks neural/vision shader instructions, `MTLCompilerService` enters a 5–10 second shader compilation loop that stalls image display.
-To eliminate this stall instantly (0.0s latency):
-1. Run the included script:
-   ```bash
-   cd Utilities/Photo-Viewer-Fix
-   ./fix_photo_stall.sh
-   ```
-   Or apply directly in Terminal:
-   ```bash
-   defaults write -g AppleLiveTextEnabled -bool false
-   ```
+### 6. Disable Live Text Image Stalls (Recommended)
+On Alder Lake, viewing images full-screen can trigger Apple's Live Text OCR shader compilation loops on the donor Tiger Lake driver:
+```bash
+cd Utilities/Photo-Viewer-Fix
+./fix_photo_stall.sh
+```
 
 ---
 
-## Special Credits
+## Credits
 
-- **[b00t0x](https://github.com/b00t0x):** Creator of the CpuTopologyRebuild plugin, WhateverXe project, and WhateverXe-Graphics userspace bundle framework.
-- **Thatisjigen & renedis:** Crucial reverse-engineering and commits for Alder Lake eDP port hand-off, single-output CDCLK routing, and Display Engine master parking.
-- **[laobamac](https://github.com/laobamac/SimpleHDA):** Creator of SimpleHDA for restoring the AppleHDA audio stack on macOS Tahoe without root patches.
-- **[Acidanthera](https://github.com/acidanthera):** Authors and maintainers of OpenCore, Lilu, AppleALC, VirtualSMC, RestrictEvents, and MacKernelSDK.
-- **[TAT-Hins](https://github.com/TAT-Hins/Dell-Latitude-7490-Hackintosh-OC-EFI):** Reference layout for documentation structure and system configuration.
+- **[b00t0x](https://github.com/b00t0x):** WhateverXe, WhateverXe-Graphics, and CpuTopologyRebuild.
+- **Thatisjigen & renedis:** Alder Lake eDP port hand-off, single-output CDCLK routing, and DE master sleep/wake logic.
+- **[retropineaple](https://github.com/retropineaple):** GPU hardware reset recovery and RCS state restoration.
+- **[laobamac](https://github.com/laobamac/SimpleHDA):** SimpleHDA audio restoration for macOS Tahoe.
+- **[Acidanthera](https://github.com/acidanthera):** OpenCore, Lilu, AppleALC, VirtualSMC, and MacKernelSDK.
+- **[TAT-Hins](https://github.com/TAT-Hins/Dell-Latitude-7490-Hackintosh-OC-EFI):** Reference documentation structure.
