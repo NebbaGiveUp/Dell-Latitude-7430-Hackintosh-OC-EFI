@@ -1445,7 +1445,7 @@
 			<key>AppleXcpmExtraMsrs</key>
 			<false/>
 			<key>AppleXcpmForceBoost</key>
-			<false/>
+			<true/>
 			<key>CustomPciSerialDevice</key>
 			<false/>
 			<key>CustomSMBIOSGuid</key>
@@ -1636,7 +1636,7 @@
 				AAAAAAAAAAAAAAAAAAA=
 				</data>
 				<key>boot-args</key>
-				<string>keepsyms=1 -vi2c-force-polling -v -allow3d -disablegfxfirmware -igfxdvmt alcid=11 -wexgvadrop=IOGVAScaler,IOGVABGRAEnc,IOGVAHEVCEncodeCapabilities,IOGVACodec -wex-reset-restore -wex-no-multicontext</string>
+				<string>keepsyms=1 -vi2c-force-polling -v -allow3d -disablegfxfirmware -igfxdvmt alcid=11 -wexgvadrop=IOGVAScaler,IOGVABGRAEnc,IOGVAHEVCEncodeCapabilities,IOGVACodec -wex-reset-restore</string>
 				<key>csr-active-config</key>
 				<data>
 				AwgAAA==
