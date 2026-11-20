@@ -58,7 +58,7 @@ Press `F2` at boot to enter BIOS setup and configure the following options:
 - **Wireless & Bluetooth:** 2.4/5 GHz Wi-Fi via `AirportItlwm.kext`; Bluetooth pairing and audio via `IntelBluetoothFirmware.kext` and `BlueToolFixup.kext`.
 - **Trackpad:** Full macOS multi-touch gestures via `VoodooI2C.kext` and `VoodooI2CHID.kext`.
 - **Power & Battery:** Real-time battery status, percentage, and discharge rate via `VirtualSMC.kext` and `SMCBatteryManager.kext`.
-- **Peripherals:** 1080p Webcam, Thunderbolt 4 (charging and data), USB-A 3.2 Gen 1 with PowerShare.
+- **Peripherals:** 1080p Webcam, USB-A 3.2 Gen 1 with PowerShare.
 
 ### Limitations
 - **Safari 4K VP9/AV1:** High-resolution VP9/AV1 streams in Safari fall back to CPU decode or drop frames. Use Chrome or Firefox for 4K60.
